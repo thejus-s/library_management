@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>LIBRARY|All Books</title>
+{% endblock %}
+
+{% block content %}
+<section id="featured-books" class="py-5 my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Some quality items</span>
+                    </div>
+                    <h2 class="section-title">All Books</h2>
+                </div>
+
+                <div class="product-list" data-aos="fade-up">
+                    <div class="row">
+                        {% for book in books %}
+                            <div class="col-md-3">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <img src="{{book.image.url}}" alt="Books" class="product-item">
+                                        {% if request.session.userid %}
+                                            {% if book.copies != 0 %}
+                                            <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+                                            {% else %}
+                                            <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+                                            {% endif %}
+                                        {% else %}
+                                        <a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+                                        {% endif %}
+                                    </figure>
+                                    <figcaption>
+                                        <h3>{{book.title}}</h3>
+                                        <span>{{book.author}}</span>
+                                        <p>{{book.description|slice:":90"}}...</p>
+                                        <div class="item-price">Copies Available:{{book.copies}}</div>
+                                    </figcaption>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

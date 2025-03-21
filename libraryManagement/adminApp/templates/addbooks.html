@@ -1,0 +1,53 @@
+{% extends 'adminBase.html' %}
+{% load static %}
+{% block head %}
+<title>LIBRARY|Admin view Books</title>
+<style>
+    input,textarea{
+        border: none !important;
+    }
+    .cbtn{
+        height: 47px;
+        width: 34%;
+        color: whitesmoke;
+        border-radius: 12px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container mx-auto mt-4 p-2 shadow-2xl border-1 border-slate-200 
+" style="width: 35%;">
+    <h2 class="text-center font-bold text-2xl text">ADD BOOK</h2>
+    <form method="post"  action="{% url 'addbooks' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group mt-3" style="margin-top: 5%;">
+            <input class="w-full focus:ring-1 focus:ring-[#93918c] " name="title" type="text" placeholder="Title"required>
+        </div >
+        <div class="form-group mt-3" style="margin-top: 5%;">
+            <input class="w-full focus:ring-1 focus:ring-[#93918c] " name="author" type="text" placeholder="Author" required>
+        </div>
+        <div class="form-group mt-3" style="margin-top: 5%;">
+            <textarea class="w-full focus:ring-1 focus:ring-[#93918c] " name="description" placeholder="Description" required></textarea>
+        </div>
+        <div class="form-group mt-3" style="margin-top: 5%;">
+            <select class="form-control" name="category">
+                {% for cat in category %}
+                <option value="{{cat.slug}}">{{cat.name}}</option>
+                {% endfor %}
+             </select>
+        </div>
+        <div class="form-group my-3">
+            <input class="w-full focus:ring-1 focus:ring-[#93918c] " type="number" placeholder="copies" name="copies">
+        </div>
+        <div class="form-group my-3">
+            <input class="w-full focus:ring-1 focus:ring-[#93918c] " type="file" placeholder="Upload Image" name="images">
+        </div>
+        <div class="form-group my-3">
+            <input class="w-full focus:ring-1 focus:ring-[#93918c] " type="text" placeholder="ISBN" name="isbn">
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-info cbtn ">Add Book</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

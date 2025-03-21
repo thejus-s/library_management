@@ -1,0 +1,204 @@
+{% extends 'adminBase.html' %}
+{% load static %}
+
+{% block head %}
+<title>LIBRARY|Admin Dashboard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,edit" />
+<style>
+    body {
+        overflow-x: hidden;
+    }
+
+    .hover-scale {
+        transition: transform 0.3s ease;
+    }
+
+    .hover-scale:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+{% block content %}
+<!-- Stats Section -->
+<div class="row mb-4">
+    <div class="col-md-3 hover-scale">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <h5 class="text-primary">📚 Total Books</h5>
+            <p class="display-6 fw-bold">{{books.count}}</p>
+        </div>
+    </div>
+    <div class="col-md-3 hover-scale">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <h5 class="text-success">👥 Registered Users</h5>
+            <p class="display-6 fw-bold">{{users.count}}</p>
+        </div>
+    </div>
+    <div class="col-md-3 hover-scale">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <h5 class="text-warning">📖 Borrowed Books</h5>
+            <p class="display-6 fw-bold">{{borrows.count}}</p>
+        </div>
+    </div>
+    <div class="col-md-3 hover-scale">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <h5 class="text-danger">⚠ Overdue Books</h5>
+            <p class="display-6 fw-bold">{{overduebooks.count}}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Action Cards -->
+<div class="row mb-4">
+    <div class="col-md-4 hover-scale">
+        <a href="{% url 'viewbooks' %}" class="card border-0 shadow-sm text-center p-4 text-decoration-none">
+            <h5 class="text-primary">📚 Manage Books</h5>
+            <p class="text-muted">Add, update, and delete books.</p>
+        </a>
+    </div>
+    <div class="col-md-4 hover-scale">
+        <a href="#user" class="card border-0 shadow-sm text-center p-4 text-decoration-none">
+            <h5 class="text-success">👥 Manage Users</h5>
+            <p class="text-muted">View and delete users.</p>
+        </a>
+    </div>
+    <div class="col-md-4 hover-scale">
+        <a href="{% url 'overdue' %}" class="card border-0 shadow-sm text-center p-4 text-decoration-none">
+            <h5 class="text-warning">📖 Borrowed Books</h5>
+            <p class="text-muted">Track borrowed and overdue books.</p>
+        </a>
+    </div>
+</div>
+
+<section id="recent-borrows" class="py-5 my-3">
+    <div class="container">
+        <div class="section-header align-center">
+            <!-- <div class="title">
+                <span>Some quality items</span>
+            </div> -->
+            <h2 class="section-title">RECENT BORROWS</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Book</th>
+                    <th scope="col">ISBN</th>
+                    <th scope="col">Borrow Date</th>
+                    <th scope="col">Return Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrow in borrows %}
+                <tr>
+                    <th class="align-middle" scope="row">{{forloop.counter}}</th>
+                    <td class="align-middle">{{borrow.user.email}}</td>
+                    <td class="align-middle">{{borrow.book.title}}</td>
+                    <td class="align-middle">{{borrow.book.ISBN}}</td>
+                    <td class="align-middle">{{borrow.borrowed_at}}</td>
+                    <td class="align-middle">{{borrow.return_date}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+<!-- users -->
+<section id="user" class="py-5 my-3">
+    <div class="container">
+        <div class="section-header align-center">
+            <!-- <div class="title">
+                <span>Some quality items</span>
+            </div> -->
+            <h2 class="section-title">Users</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                {% if user.role == 'User' %}
+                <tr>
+                    <th scope="row" class="align-middle">{{user.id}}</th>
+                    <td class="align-middle">{{user.fname}}</td>
+                    <td class="align-middle">{{user.lname}}</td>
+                    <td class="align-middle">{{user.email}}</td>
+                    <td class="align-middle">{{user.phone}}</td>
+                    <td>
+                        <a href="{% url 'deleteuser' user.id %}">
+                            <button class="btn">
+                                <span class="material-symbols-outlined text-red-500">
+                                    delete
+                                </span>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+<!-- books -->
+<section id="books" class="py-5 my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="section-header align-center">
+                    <!-- <div class="title">
+                        <span>Some quality items</span>
+                    </div> -->
+                    <h2 class="section-title">Books</h2>
+                </div>
+
+                <div class="product-list" data-aos="fade-up">
+                    <div class="row">
+                        {% for book in dbooks %}
+                            <div class="col-md-3">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <img src="{{book.image.url}}" alt="Books" class="product-item">
+                                        <!-- <a href="#"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a> -->
+                                    </figure>
+                                    <figcaption>
+                                        <h3>{{book.title}}</h3>
+                                        <span>{{book.author}}</span>
+                                        <p>{{book.description|slice:":90"}}...</p>
+                                        <div class="item-price">Copies Available:{{book.copies}}</div>
+                                    </figcaption>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                    </div><!--ft-books-slider-->
+                </div><!--grid-->
+
+
+            </div><!--inner-content-->
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="btn-wrap align-right">
+                    <a href="{% url 'viewbooks' %}" class="btn-accent-arrow">View all products <i
+                            class="icon icon-ns-arrow-right"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

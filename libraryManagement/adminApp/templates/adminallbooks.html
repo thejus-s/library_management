@@ -1,0 +1,60 @@
+{% extends 'adminBase.html' %}
+{% load static %}
+{% block head %}
+<title>LIBRARY|Admin view Books</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,edit" />
+    {% endblock %}
+    {% block content %}
+    <section id="featured-books" class="py-5 my-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="section-header align-center">
+                        <div class="title">
+                            <!-- <span>Borrowed Books</span> -->
+                        </div>
+                        <h2 class="section-title">All Books</h2>
+                    </div>
+
+                    <div class="product-list" data-aos="fade-up">
+                        <div class="row">
+                            {% for book in books %}
+                            <div class="col-md-3">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <img src="{{book.image.url}}" alt="Books" class="product-item">
+                                    </figure>
+                                    <figcaption>
+                                        <h3>{{book.title}}</h3>
+                                        <span>{{book.author}}</span>
+                                        <p>{{book.description|slice:":90"}}...</p>
+                                        <div class=" mt-3">
+                                            <a href="{% url 'editbook' book.slug %}">
+                                                <button class="btn">
+                                                    <span class="material-symbols-outlined">
+                                                        edit
+                                                    </span>
+                                                </button>
+                                            </a>
+                                            <a href="{% url 'deletebook' book.slug %}">
+                                                <button class="btn">
+                                                    <span class="material-symbols-outlined text-red-500">
+                                                        delete
+                                                    </span>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </figcaption>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endblock %}

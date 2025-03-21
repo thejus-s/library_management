@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>LIBRARY|Your Profile</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=edit,logout" />
+{% endblock %}
+
+{% block content %}
+<section id="client-holder" data-aos="fade-up">
+    <div class="container">
+        <div class="row justify-content-end" style="width: 70%; margin-left: 50px;">
+            <div class="col-md-8">
+                <div class="profile-card p-4 shadow rounded position-relative">
+                    <!-- Buttons -->
+                    <div class="position-absolute top-0 end-0 p-2">
+                        <a href="{% url 'editprofile' %}">
+                            <button class="btn me-1" >
+                                <span class="material-symbols-outlined">
+                                    edit
+                                </span>
+                            </button>
+                        </a>
+                        <a href="{% url 'logout' %}">
+                            <button class="btn">
+                                <span class="material-symbols-outlined text-red-500">
+                                    logout
+                                </span>
+                            </button>
+                        </a>
+                    </div>
+        
+                    <h2 class="text-center mb-4">Profile Information</h2>
+        
+                    <div class="row">
+                        <!-- First Name -->
+                        <div class="col-md-6 mb-3">
+                            <strong>First Name:</strong>
+                            <span>{{ user.fname }}</span>
+                        </div>
+                        <!-- Last Name -->
+                        <div class="col-md-6 mb-3">
+                            <strong>Last Name:</strong>
+                            <span>{{ user.lname }}</span>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <!-- Email -->
+                        <div class="col-md-6 mb-3">
+                            <strong>Email:</strong>
+                            <span>{{ user.email }}</span>
+                        </div>
+                        <!-- Phone -->
+                        <div class="col-md-6 mb-3">
+                            <strong>Phone:</strong>
+                            <span>{{ user.phone }}</span>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <!-- Borrowed Books -->
+                        <div class="col-md-6 mb-3">
+                            <strong>Books Borrowed:</strong>
+                            <span>{{ borrowedbook.count }}</span>
+                        </div>
+                        <!-- Books to Return -->
+                        <div class="col-md-6 mb-3">
+                            <strong>Books to Return:</strong>
+                            <span>{{ returnbookcount }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+
+<section id="featured-books" class="py-5 my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="section-header align-center">
+                    <div class="title">
+                        <!-- <span>Borrowed Books</span> -->
+                    </div>
+                    <h2 class="section-title">Borrowed Books</h2>
+                </div>
+
+                <div class="product-list" data-aos="fade-up">
+                    <div class="row">
+                        {% for book in borrowedbook %}
+                        <div class="col-md-3">
+                            <div class="product-item">
+                                <figure class="product-style">
+                                    <img src="{{book.book.image.url}}" alt="Books" class="product-item">
+                                </figure>
+                                <figcaption>
+                                    <h3>{{book.book.title}}</h3>
+                                    <span>{{book.book.author}}</span>
+                                    <p>{{book.book.description|slice:":90"}}...</p>
+                                    <div class=" mt-3">
+                                        {% if book.status %}
+                                        <p class="font-bold">Returned at {{book.returned_at}}</p>
+                                        {% else %}
+                                        <p class="font-bold mb-2">Return Book on {{book.return_date}}</p>
+                                        <a href="{% url 'return' book.id %}">
+                                            <button class="btn btn-outline-accent btn-accent-arrow" style="height: 50px;">
+                                                Return Book
+                                            </button>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </figcaption>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

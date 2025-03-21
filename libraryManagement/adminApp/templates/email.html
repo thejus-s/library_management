@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h3>Dear {{ user.first_name }},</h3>
+    <p>You have overdue books that need to be returned:</p>
+    <ul>
+        {% for borrow in books %}
+        <li><b>{{ borrow.book.title }}</b> (Due Date: {{ borrow.return_date }})</li>
+        {% endfor %}
+    </ul>
+    <p>Please return them as soon as possible to avoid late fees.</p>
+    <p>Thank you!</p>
+</body>
+</html>

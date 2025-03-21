@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>LIBRARY|INDEX</title>
+{% endblock %}
+
+{% block content %}
+<!-- slide -->
+	<section id="billboard">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<button class="prev slick-arrow">
+						<i class="icon icon-arrow-left"></i>
+					</button>
+
+					<div class="main-slider pattern-overlay">
+						{% for book in newbooks %}
+						<div class="slider-item">
+							<div class="banner-content">
+								<h2 class="banner-title">{{book.title}}</h2>
+								<h4 class="pl-2">-by,{{book.author}}</h4>
+								<p class="mt-2">{{book.description|slice:":200"}}...</p>
+								<div class="btn-wrap">
+								    {% if request.session.userid %}
+										{% if book.copies != 0 %}
+									    <a href="{% url 'borrow' book.slug %}" class="btn btn-outline-accent btn-accent-arrow">Borrow Now<i
+											class="icon icon-ns-arrow-right"></i></a>
+										{% else %}
+										<button class="btn btn-outline-accent btn-accent-arrow " disabled><strike>Borrow Now</strike><i
+											class="icon icon-ns-arrow-right"></i></button>
+										{% endif %}
+									{% else %}
+									<a href="{% url 'login' %}" class="btn btn-outline-accent btn-accent-arrow">Login to Borrow Now<i
+										class="icon icon-ns-arrow-right"></i></a>
+									{% endif %}
+								</div>
+							</div><!--banner-content-->
+							<img src="{{book.image.url}}" alt="banner" class="banner-image" style="height: 572px; width: 395px;">
+						</div><!--slider-item-->
+						{% endfor %}
+
+					</div><!--slider-->
+
+					<button class="next slick-arrow">
+						<i class="icon icon-arrow-right"></i>
+					</button>
+
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+ <!-- featured -->
+	<section id="featured-books" class="py-5 my-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="section-header align-center">
+						<div class="title">
+							<span>Some quality items</span>
+						</div>
+						<h2 class="section-title">Featured Books</h2>
+					</div>
+
+					<div class="product-list" data-aos="fade-up">
+						<div class="row">
+							{% for book in featured_books %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endfor %}
+
+						</div><!--ft-books-slider-->
+					</div><!--grid-->
+
+
+				</div><!--inner-content-->
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="btn-wrap align-right">
+						<a href="{% url 'allbooks' %}" class="btn-accent-arrow">View all products <i
+								class="icon icon-ns-arrow-right"></i></a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- popularbook -->
+	<section id="popular-books" class="bookshelf py-5 my-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="section-header align-center">
+						<div class="title">
+							<span>Some quality items</span>
+						</div>
+						<h2 class="section-title">Popular Books</h2>
+					</div>
+
+					<ul class="tabs">
+						<li data-tab-target="#all-genre" class="active tab">All Genre</li>
+						<li data-tab-target="#science" class="tab">Science</li>
+						<li data-tab-target="#technology" class="tab">Technology</li>
+						<li data-tab-target="#romantic" class="tab">Romantic</li>
+						<li data-tab-target="#adventure" class="tab">Adventure</li>
+						<li data-tab-target="#fictional" class="tab">Fictional</li>
+					</ul>
+
+					<div class="tab-content">
+						<!-- allgenre -->
+						<div id="all-genre" data-tab-content class="active">
+							<div class="row">
+								{% for book in popular_books %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						<!-- SCIENCE -->
+						<div id="science" data-tab-content>
+							<div class="row">
+								{% for book in popular_books %}
+								{% if book.category.name == 'Science' %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</div>
+							
+						</div>
+						<!-- technology -->
+						<div id="technology" data-tab-content>
+							<div class="row">
+								{% for book in popular_books %}
+								{% if book.category.name == 'Technology' %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+
+						<!-- romantic -->
+						<div id="romantic" data-tab-content>
+							<div class="row">
+								{% for book in popular_books %}
+								{% if book.category.name == 'Romantic' %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+
+						<!-- adventure -->
+						<div id="adventure" data-tab-content>
+							<div class="row">
+								{% for book in popular_books %}
+								{% if book.category.name == 'Adventure' %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+						<!-- fictional -->
+						<div id="fictional" data-tab-content>
+							<div class="row">
+								{% for book in popular_books %}
+								{% if book.category.name == 'Fiction' %}
+								<div class="col-md-3">
+									<div class="product-item">
+										<figure class="product-style">
+											<img src="{{book.image.url}}" alt="Books" class="product-item">
+											{% if request.session.userid %}
+											    {% if book.copies != 0 %}
+											    <a href="{% url 'borrow' book.slug %}"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">Borrow</button></a>
+											    {% else %}
+											    <button type="button" class="add-to-cart !bg-red-500" disabled data-product-tile="add-to-cart">Out of Stock</button >
+											    {% endif %}
+											{% else %}
+											<a href="{% url 'login' %}"><button type="button" class="add-to-cart !bg-blue-400"  data-product-tile="add-to-cart">Login To Borrow</button ></a>
+											{% endif %}
+										</figure>
+										<figcaption>
+											<h3>{{book.title}}</h3>
+											<span>{{book.author}}</span>
+											<p>{{book.description|slice:":90"}}...</p>
+											<div class="item-price">Copies Available:{{book.copies}}</div>
+										</figcaption>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+
+					</div>
+
+				</div><!--inner-tabs-->
+				
+			</div>
+		</div>
+	</section>
+
+{% endblock %}

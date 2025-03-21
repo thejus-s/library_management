@@ -1,0 +1,42 @@
+{% extends 'adminBase.html' %}
+{% load static %}
+{% block head %}
+<title>LIBRARY|Overdue Books</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,edit" />
+{% endblock %}
+{% block content %}
+<section id="recent-borrows" class="py-5 my-3">
+    <div class="container">
+        <div class="section-header align-center">
+            <!-- <div class="title">
+                <span>Some quality items</span>
+            </div> -->
+            <h2 class="section-title">Overdue Books</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Book</th>
+                    <th scope="col">ISBN</th>
+                    <th scope="col">Borrow Date</th>
+                    <th scope="col">Return Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrow in books %}
+                <tr>
+                    <th class="align-middle" scope="row">{{forloop.counter}}</th>
+                    <td class="align-middle">{{borrow.user.email}}</td>
+                    <td class="align-middle">{{borrow.book.title}}</td>
+                    <td class="align-middle">{{borrow.book.ISBN}}</td>
+                    <td class="align-middle">{{borrow.borrowed_at}}</td>
+                    <td class="align-middle">{{borrow.return_date}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
